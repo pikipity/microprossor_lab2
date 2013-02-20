@@ -1,0 +1,92 @@
+A51 MACRO ASSEMBLER  LAB2                                                                 02/20/2013 19:46:50 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00
+OBJECT MODULE PLACED IN lab2.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE lab2.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG 0H
+0000 8036              2             JMP MAIN
+                       3     
+0003                   4             ORG 03H
+0003 8010              5             JMP SUM
+                       6     
+0013                   7             ORG 13H
+0013 8011              8             JMP SUB
+                       9     
+                      10     ;This is the add subroutine for INT0
+                      11     ;input: P1 and P2
+                      12     ;function: P1+P2 and display
+                      13     ;output: display C -> P3.0
+                      14     ;                summation -> P0
+                      15     ;REG: A, B, PSW
+0015                  16     SUM:
+0015 C2AF             17             CLR EA;stop interrupt
+0017 E590             18             MOV A,P1
+0019 F5F0             19             MOV B,A
+001B E5A0             20             MOV A,P2
+001D 25F0             21             ADD A,B
+001F F580             22             MOV P0,A
+0021 92B0             23             MOV P3.0,C
+0023 D2AF             24             SETB EA;restart interrupt
+0025 32               25             RETI
+                      26     
+                      27     ;This is the subbtraction for INT1
+                      28     ;input: P1 and P2
+                      29     ;function: P1-P2 and display
+                      30     ;output: display C -> P3.0
+                      31     ;                summation -> P0
+                      32     ;REG: A,B,PSW
+0026                  33     SUB:
+0026 C2AF             34             CLR EA;stop EA
+0028 E5A0             35             MOV A,P2
+002A F5F0             36             MOV B,A
+002C E590             37             MOV A,P1
+002E C3               38             CLR C
+002F 95F0             39             SUBB A,B
+0031 F580             40             MOV P0,A
+0033 92B0             41             MOV P3.0,C
+0035 D2AF             42             SETB EA
+0037 32               43             RETI
+                      44     
+0038                  45     MAIN:
+0038 758000           46             MOV P0,#0
+003B E5B0             47             MOV A,P3
+003D 54FE             48             ANL A,#0FEH
+003F F5B0             49             MOV P3,A
+0041 D2A8             50             SETB EX0
+0043 D288             51             SETB IT0
+0045 D2AA             52             SETB EX1
+0047 D28A             53             SETB IT1
+0049 D2AF             54             SETB EA
+004B 80FE             55             JMP $
+                      56             END
+A51 MACRO ASSEMBLER  LAB2                                                                 02/20/2013 19:46:50 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . .  B ADDR   00A8H.2 A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+MAIN . . . . . . .  C ADDR   0038H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+SUB. . . . . . . .  C ADDR   0026H   A   
+SUM. . . . . . . .  C ADDR   0015H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
