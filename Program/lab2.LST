@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  LAB2                                                                 02/20/2013 19:46:50 PAGE     1
+A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.00
@@ -8,62 +8,93 @@ ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE lab2.asm SET(SMALL) DEBUG EP
 LOC  OBJ            LINE     SOURCE
 
 0000                   1             ORG 0H
-0000 8036              2             JMP MAIN
+0000 8057              2             JMP MAIN
                        3     
 0003                   4             ORG 03H
 0003 8010              5             JMP SUM
                        6     
 0013                   7             ORG 13H
-0013 8011              8             JMP SUB
+0013 8017              8             JMP SUB
                        9     
                       10     ;This is the add subroutine for INT0
                       11     ;input: P1 and P2
                       12     ;function: P1+P2 and display
-                      13     ;output: display C -> P3.0
-                      14     ;                summation -> P0
+                      13     ;output: display Carry -> P3.0 and P3.1 -> first 7-seg LED
+                      14     ;                summation -> P0 -> last two 7-seg LED
                       15     ;REG: A, B, PSW
 0015                  16     SUM:
-0015 C2AF             17             CLR EA;stop interrupt
-0017 E590             18             MOV A,P1
-0019 F5F0             19             MOV B,A
-001B E5A0             20             MOV A,P2
-001D 25F0             21             ADD A,B
-001F F580             22             MOV P0,A
-0021 92B0             23             MOV P3.0,C
-0023 D2AF             24             SETB EA;restart interrupt
-0025 32               25             RETI
-                      26     
-                      27     ;This is the subbtraction for INT1
-                      28     ;input: P1 and P2
-                      29     ;function: P1-P2 and display
-                      30     ;output: display C -> P3.0
-                      31     ;                summation -> P0
-                      32     ;REG: A,B,PSW
-0026                  33     SUB:
-0026 C2AF             34             CLR EA;stop EA
-0028 E5A0             35             MOV A,P2
-002A F5F0             36             MOV B,A
-002C E590             37             MOV A,P1
-002E C3               38             CLR C
-002F 95F0             39             SUBB A,B
-0031 F580             40             MOV P0,A
-0033 92B0             41             MOV P3.0,C
-0035 D2AF             42             SETB EA
-0037 32               43             RETI
-                      44     
-0038                  45     MAIN:
-0038 758000           46             MOV P0,#0
-003B E5B0             47             MOV A,P3
-003D 54FE             48             ANL A,#0FEH
-003F F5B0             49             MOV P3,A
-0041 D2A8             50             SETB EX0
-0043 D288             51             SETB IT0
-0045 D2AA             52             SETB EX1
-0047 D28A             53             SETB IT1
-0049 D2AF             54             SETB EA
-004B 80FE             55             JMP $
-                      56             END
-A51 MACRO ASSEMBLER  LAB2                                                                 02/20/2013 19:46:50 PAGE     2
+0015 C2AF             17             CLR EA               ;stop interrupt
+0017 114F             18             CALL Clear_display       ;Clear LED
+                      19             ;do summation
+0019 E590             20             MOV A,P1
+001B F5F0             21             MOV B,A
+001D E5A0             22             MOV A,P2
+001F 25F0             23             ADD A,B
+                      24             ;display summation
+0021 F580             25             MOV P0,A
+                      26             ;display carray
+0023 5004             27             JNC SUM_finish       ;if no carry, display nothing
+0025 D2B0             28             SETB P3.0                        ;if have carry, display 1
+0027 D2B1             29             SETB P3.1
+                      30             ;finish summation
+0029                  31     SUM_finish:
+0029 D2AF             32             SETB EA              ;restart interrupt
+002B 32               33             RETI
+                      34     
+                      35     ;This is the subbtraction for INT1
+                      36     ;input: P1 and P2
+                      37     ;function: P1-P2 and display
+                      38     ;output: if difference is positive, display difference in last two 7-seg LED
+                      39     ;        if difference is negative, display negative sign in first 7-seg LED 
+                      40     ;                                   and display absoluate difference in last two 7-seg LED
+                      41     ;REG: A,B,PSW
+002C                  42     SUB:
+002C C2AF             43             CLR EA                 ;stop EA
+002E 114F             44             CALL Clear_display         ;clear display
+                      45             ;start P1-P2
+0030 E5A0             46             MOV A,P2
+0032 F5F0             47             MOV B,A
+0034 E590             48             MOV A,P1
+0036 C3               49             CLR C
+0037 95F0             50             SUBB A,B
+                      51             ;
+0039 4004             52             JC SUB_negative            ;if negative, jump to SUB_negative
+003B                  53     SUB_positive:                      ;if positive, go to SUB_positive
+003B F580             54             MOV P0,A                           ;if difference is positive, display difference i
+                             n last two 7-seg LED
+003D 800D             55             JMP SUB_finish
+003F                  56     SUB_negative:                      
+003F D2B4             57             SETB P3.4       ;display negative sign
+A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     2
+
+0041 E590             58             MOV     A,P1    ;display P2-P1 to last two 7-seg LED
+0043 F5F0             59             MOV B,A
+0045 E5A0             60             MOV A,P2
+0047 C3               61             CLR C
+0048 95F0             62             SUBB A,B
+004A F580             63             MOV P0,A
+                      64             ;finish subbtraction
+004C                  65     SUB_finish:
+004C D2AF             66             SETB EA
+004E 32               67             RETI
+                      68     
+004F                  69     Clear_display:
+004F 758000           70             MOV P0,#0
+0052 C2B0             71             CLR P3.0
+0054 C2B1             72             CLR P3.1
+0056 C2B4             73             CLR P3.4
+0058 22               74             RET
+                      75     
+0059                  76     MAIN:
+0059 114F             77             CALL Clear_display
+005B D2A8             78             SETB EX0
+005D D288             79             SETB IT0
+005F D2AA             80             SETB EX1
+0061 D28A             81             SETB IT1
+0063 D2AF             82             SETB EA
+0065 80FE             83             JMP $
+                      84             END
+A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -72,18 +103,23 @@ SYMBOL TABLE LISTING
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
 B. . . . . . . . .  D ADDR   00F0H   A   
+CLEAR_DISPLAY. . .  C ADDR   004FH   A   
 EA . . . . . . . .  B ADDR   00A8H.7 A   
 EX0. . . . . . . .  B ADDR   00A8H.0 A   
 EX1. . . . . . . .  B ADDR   00A8H.2 A   
 IT0. . . . . . . .  B ADDR   0088H.0 A   
 IT1. . . . . . . .  B ADDR   0088H.2 A   
-MAIN . . . . . . .  C ADDR   0038H   A   
+MAIN . . . . . . .  C ADDR   0059H   A   
 P0 . . . . . . . .  D ADDR   0080H   A   
 P1 . . . . . . . .  D ADDR   0090H   A   
 P2 . . . . . . . .  D ADDR   00A0H   A   
 P3 . . . . . . . .  D ADDR   00B0H   A   
-SUB. . . . . . . .  C ADDR   0026H   A   
+SUB. . . . . . . .  C ADDR   002CH   A   
+SUB_FINISH . . . .  C ADDR   004CH   A   
+SUB_NEGATIVE . . .  C ADDR   003FH   A   
+SUB_POSITIVE . . .  C ADDR   003BH   A   
 SUM. . . . . . . .  C ADDR   0015H   A   
+SUM_FINISH . . . .  C ADDR   0029H   A   
 
 
 REGISTER BANK(S) USED: 0 

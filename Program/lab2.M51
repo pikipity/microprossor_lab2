@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.00                                                        02/20/2013  19:46:50  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.00                                                        02/22/2013  22:55:25  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
@@ -19,7 +19,7 @@ LINK MAP OF MODULE:  lab2 (LAB2)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     004DH     ABSOLUTE     
+            CODE    0000H     0067H     ABSOLUTE     
 
 
 
@@ -30,54 +30,73 @@ SYMBOL TABLE OF MODULE:  lab2 (LAB2)
 
   -------         MODULE        LAB2
   D:00F0H         SYMBOL        B
+  C:004FH         SYMBOL        CLEAR_DISPLAY
   B:00A8H.7       SYMBOL        EA
   B:00A8H.0       SYMBOL        EX0
   B:00A8H.2       SYMBOL        EX1
   B:0088H.0       SYMBOL        IT0
   B:0088H.2       SYMBOL        IT1
-  C:0038H         SYMBOL        MAIN
+  C:0059H         SYMBOL        MAIN
   D:0080H         SYMBOL        P0
   D:0090H         SYMBOL        P1
   D:00A0H         SYMBOL        P2
   D:00B0H         SYMBOL        P3
-  C:0026H         SYMBOL        SUB
+  C:002CH         SYMBOL        SUB
+  C:004CH         SYMBOL        SUB_FINISH
+  C:003FH         SYMBOL        SUB_NEGATIVE
+  C:003BH         SYMBOL        SUB_POSITIVE
   C:0015H         SYMBOL        SUM
+  C:0029H         SYMBOL        SUM_FINISH
   C:0000H         LINE#         2
   C:0003H         LINE#         5
   C:0013H         LINE#         8
   C:0015H         LINE#         17
   C:0017H         LINE#         18
-  C:0019H         LINE#         19
-  C:001BH         LINE#         20
-  C:001DH         LINE#         21
-  C:001FH         LINE#         22
-  C:0021H         LINE#         23
-  C:0023H         LINE#         24
-  C:0025H         LINE#         25
-  C:0026H         LINE#         34
-  C:0028H         LINE#         35
-  C:002AH         LINE#         36
-  C:002CH         LINE#         37
-  C:002EH         LINE#         38
-BL51 BANKED LINKER/LOCATER V6.00                                                      02/20/2013  19:46:50  PAGE 2
+  C:0019H         LINE#         20
+  C:001BH         LINE#         21
+  C:001DH         LINE#         22
+  C:001FH         LINE#         23
+  C:0021H         LINE#         25
+  C:0023H         LINE#         27
+  C:0025H         LINE#         28
+BL51 BANKED LINKER/LOCATER V6.00                                                      02/22/2013  22:55:25  PAGE 2
 
 
-  C:002FH         LINE#         39
-  C:0031H         LINE#         40
-  C:0033H         LINE#         41
-  C:0035H         LINE#         42
-  C:0037H         LINE#         43
-  C:0038H         LINE#         46
-  C:003BH         LINE#         47
-  C:003DH         LINE#         48
-  C:003FH         LINE#         49
-  C:0041H         LINE#         50
-  C:0043H         LINE#         51
-  C:0045H         LINE#         52
-  C:0047H         LINE#         53
-  C:0049H         LINE#         54
-  C:004BH         LINE#         55
+  C:0027H         LINE#         29
+  C:0029H         LINE#         32
+  C:002BH         LINE#         33
+  C:002CH         LINE#         43
+  C:002EH         LINE#         44
+  C:0030H         LINE#         46
+  C:0032H         LINE#         47
+  C:0034H         LINE#         48
+  C:0036H         LINE#         49
+  C:0037H         LINE#         50
+  C:0039H         LINE#         52
+  C:003BH         LINE#         54
+  C:003DH         LINE#         55
+  C:003FH         LINE#         57
+  C:0041H         LINE#         58
+  C:0043H         LINE#         59
+  C:0045H         LINE#         60
+  C:0047H         LINE#         61
+  C:0048H         LINE#         62
+  C:004AH         LINE#         63
+  C:004CH         LINE#         66
+  C:004EH         LINE#         67
+  C:004FH         LINE#         70
+  C:0052H         LINE#         71
+  C:0054H         LINE#         72
+  C:0056H         LINE#         73
+  C:0058H         LINE#         74
+  C:0059H         LINE#         77
+  C:005BH         LINE#         78
+  C:005DH         LINE#         79
+  C:005FH         LINE#         80
+  C:0061H         LINE#         81
+  C:0063H         LINE#         82
+  C:0065H         LINE#         83
   -------         ENDMOD        LAB2
 
-Program Size: data=8.0 xdata=0 code=77
+Program Size: data=8.0 xdata=0 code=103
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
