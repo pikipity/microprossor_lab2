@@ -25,8 +25,8 @@ SUM:
 	MOV P0,A
 	;display carray
 	JNC SUM_finish       ;if no carry, display nothing
-	SETB P3.0			 ;if have carry, display 1
-	SETB P3.1
+	CLR P3.0			 ;if have carry, display 1
+	CLR P3.1
 	;finish summation
 SUM_finish:
 	SETB EA              ;restart interrupt
@@ -54,7 +54,7 @@ SUB_positive:			   ;if positive, go to SUB_positive
 	MOV P0,A			   ;if difference is positive, display difference in last two 7-seg LED
 	JMP SUB_finish
 SUB_negative:			   
-	SETB P3.4	;display negative sign
+	CLR P3.4	;display negative sign
 	MOV	A,P1	;display P2-P1 to last two 7-seg LED
 	MOV B,A
 	MOV A,P2
@@ -68,9 +68,9 @@ SUB_finish:
 
 Clear_display:
 	MOV P0,#0
-	CLR P3.0
-	CLR P3.1
-	CLR P3.4
+	SETB P3.0
+	SETB P3.1
+	SETB P3.4
 	RET
 
 MAIN:
