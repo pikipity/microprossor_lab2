@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     1
+A51 MACRO ASSEMBLER  LAB2                                                                 02/28/2013 21:38:40 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.00
@@ -34,8 +34,8 @@ LOC  OBJ            LINE     SOURCE
 0021 F580             25             MOV P0,A
                       26             ;display carray
 0023 5004             27             JNC SUM_finish       ;if no carry, display nothing
-0025 D2B0             28             SETB P3.0                        ;if have carry, display 1
-0027 D2B1             29             SETB P3.1
+0025 C2B0             28             CLR P3.0                         ;if have carry, display 1
+0027 C2B1             29             CLR P3.1
                       30             ;finish summation
 0029                  31     SUM_finish:
 0029 D2AF             32             SETB EA              ;restart interrupt
@@ -64,8 +64,8 @@ LOC  OBJ            LINE     SOURCE
                              n last two 7-seg LED
 003D 800D             55             JMP SUB_finish
 003F                  56     SUB_negative:                      
-003F D2B4             57             SETB P3.4       ;display negative sign
-A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     2
+003F C2B4             57             CLR P3.4        ;display negative sign
+A51 MACRO ASSEMBLER  LAB2                                                                 02/28/2013 21:38:40 PAGE     2
 
 0041 E590             58             MOV     A,P1    ;display P2-P1 to last two 7-seg LED
 0043 F5F0             59             MOV B,A
@@ -80,9 +80,9 @@ LOC  OBJ            LINE     SOURCE
                       68     
 004F                  69     Clear_display:
 004F 758000           70             MOV P0,#0
-0052 C2B0             71             CLR P3.0
-0054 C2B1             72             CLR P3.1
-0056 C2B4             73             CLR P3.4
+0052 D2B0             71             SETB P3.0
+0054 D2B1             72             SETB P3.1
+0056 D2B4             73             SETB P3.4
 0058 22               74             RET
                       75     
 0059                  76     MAIN:
@@ -94,7 +94,7 @@ LOC  OBJ            LINE     SOURCE
 0063 D2AF             82             SETB EA
 0065 80FE             83             JMP $
                       84             END
-A51 MACRO ASSEMBLER  LAB2                                                                 02/22/2013 22:55:25 PAGE     3
+A51 MACRO ASSEMBLER  LAB2                                                                 02/28/2013 21:38:40 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
